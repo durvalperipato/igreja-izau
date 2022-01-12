@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class CadastrarMembro extends StatelessWidget {
   const CadastrarMembro({Key? key}) : super(key: key);
@@ -7,7 +8,7 @@ class CadastrarMembro extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
         child: Container(
-      child: Text('CADASTRAR MEMBRO'),
+      child: ElevatedButton(onPressed: () async {}, child: Text('ENVIAR')),
     ));
   }
 }
