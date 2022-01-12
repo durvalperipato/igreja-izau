@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:igreja_izau/controller/left_bar_controller.dart';
 
-import 'widgets.dart';
+import '../widgets.dart';
 
 class LeftBar extends StatelessWidget {
   LeftBar({Key? key}) : super(key: key);
 
-  final controller = Get.put(LeftBarController());
+  final controller = Get.find<LeftBarController>();
 
   @override
   Widget build(BuildContext context) {

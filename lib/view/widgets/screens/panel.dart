@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-
-import 'package:igreja_izau/controller/left_bar_controller.dart';
 
 class PanelBody extends StatelessWidget {
   final Widget child;
