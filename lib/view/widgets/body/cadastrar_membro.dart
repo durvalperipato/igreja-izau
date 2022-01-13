@@ -1,26 +1,94 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:igreja_izau/controller/new_member_controller.dart';
+import 'package:igreja_izau/mock/congregacao_mock.dart';
+import 'package:igreja_izau/model/member.dart';
+import 'package:igreja_izau/utils/variables.dart';
 import 'package:image_picker_web/image_picker_web.dart';
 
 import 'styles.dart';
 
 class CadastrarMembro extends StatelessWidget {
-  const CadastrarMembro({Key? key}) : super(key: key);
+  CadastrarMembro({Key? key}) : super(key: key);
+
+  final GlobalKey<FormState> _formKey = GlobalKey();
+
+  _save(BuildContext context) {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+
+      Member newMember = Member(
+        congregacao: '',
+        cpf: dataOfNewMember['CPF'],
+        dataNascimento: dataOfNewMember['Nascido em'],
+        endereco: dataOfNewMember['Endereco'],
+        estado: dataOfNewMember['Estado'],
+        estadoCivil: dataOfNewMember['Estado Civil'],
+        filiacaoMae: dataOfNewMember['Filiação (mãe)'],
+        filiacaoPai: dataOfNewMember['e de (pai)'],
+        matriculaID: 0,
+        nacionalidade: dataOfNewMember['Nacionalidade'],
+        name: dataOfNewMember['Nome'],
+        naturalidade: dataOfNewMember['Natural de'],
+        rg: dataOfNewMember['RG'],
+        conjuge: dataOfNewMember['Cônjuge'],
+        conjugeCargo: dataOfNewMember['Cargo'],
+        conjugeMatricula: dataOfNewMember['Nº Matr'],
+        dataAdmissao: dataOfNewMember['Data Admissão'],
+        dataBatismo: dataOfNewMember['Batizou-se em'],
+        dataSaida: dataOfNewMember['Data Saída'],
+        escolaridade: dataOfNewMember['Escolaridade'],
+        igrejaBatismo: dataOfNewMember['Igreja/Local'],
+        imagemURL: '',
+        membroIgreja: false,
+        numeroCertidao: dataOfNewMember['Número'],
+        observacao: '',
+        procedencia: dataOfNewMember['Procedência'],
+        profissao: dataOfNewMember['Profissão'],
+        tipoCertidao: dataOfNewMember['Certidão de'],
+        tituloEleitor: dataOfNewMember['Tit. Eleitor'],
+      );
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('DADOS SALVOS COM SUCESSO'),
+        backgroundColor: Colors.green,
+      ));
+      dataOfNewMember.clear();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(12.0),
-      child: Column(
-        children: const [Header(), Fields()],
+      child: Form(
+        key: _formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Header(),
+            const Divider(),
+            const Fields(),
+            const Divider(),
+            Container(
+              margin: const EdgeInsets.symmetric(vertical: 15),
+              padding: const EdgeInsets.symmetric(horizontal: 50),
+              child: ElevatedButton(
+                onPressed: () => _save(context),
+                child: const Text('ENVIAR'),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 }
 
 class Header extends StatelessWidget {
-  const Header({Key? key}) : super(key: key);
+  Header({Key? key}) : super(key: key);
+
+  final NewMemberController controller = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -46,9 +114,23 @@ class Header extends StatelessWidget {
               Flexible(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const SizedBox(width: 80, child: Text('Matrícula')),
-                    SizedBox(width: 180, child: TextFormField())
+                  children: const [
+                    SizedBox(
+                      width: 90,
+                      child: Text('Matrícula'),
+                    ),
+                    SizedBox(
+                      width: 180,
+                      child: TextField(
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 30),
+                        readOnly: true,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.zero,
+                          border: InputBorder.none,
+                        ),
+                      ),
+                    )
                   ],
                 ),
               ),
@@ -56,12 +138,38 @@ class Header extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const SizedBox(
-                        width: 80,
-                        child: Text(
-                          'Congressão',
+                    Container(
+                        width: 90,
+                        margin: const EdgeInsets.only(right: 10),
+                        child: const Text(
+                          'Congregação:',
                         )),
-                    SizedBox(width: 180, child: TextFormField())
+                    Obx(
+                      () => SizedBox(
+                        width: 180,
+                        child: DropdownButton<String>(
+                            underline: Container(),
+                            value: controller.congregacao,
+                            onChanged: (value) =>
+                                controller.congregacao = value!,
+                            style: const TextStyle(
+                              overflow: TextOverflow.ellipsis,
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            alignment: Alignment.center,
+                            items: congregacoes
+                                .map((value) => DropdownMenuItem(
+                                      child: Text(
+                                        value,
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      value: value,
+                                    ))
+                                .toList()),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -121,9 +229,10 @@ class Fields extends StatelessWidget {
                     ),
                   ),
                   Container(
+                    padding: const EdgeInsets.all(10),
                     margin: const EdgeInsets.all(12),
                     decoration: BoxDecoration(border: Border.all()),
-                    height: 500,
+                    height: 680,
                     child: Column(
                       children: [
                         const SizedBox(
@@ -131,7 +240,7 @@ class Fields extends StatelessWidget {
                           child: Text('OBS.:'),
                         ),
                         SizedBox(
-                          height: 468,
+                          height: 628,
                           child: TextFormField(
                             maxLines: null,
                             decoration: const InputDecoration(
@@ -153,33 +262,37 @@ class Fields extends StatelessWidget {
 
   _fields(BuildContext context) => Column(
         children: [
-          fieldTextStyle(name: 'Nome'),
-          fieldTextStyle(name: 'Filiação (mãe)'),
-          fieldTextStyle(name: 'e de (pai)'),
+          fieldTextStyle(name: 'Nome', validate: true),
+          fieldTextStyle(name: 'Filiação (mãe)', validate: true),
+          fieldTextStyle(name: 'e de (pai)', validate: true),
           Row(
             children: [
               Expanded(
-                child: fieldDataStyle(name: 'Nascido em', context: context),
+                child: fieldDataStyle(
+                    name: 'Nascido em',
+                    context: context,
+                    validate: true,
+                    controller: dataNascimento),
               ),
               Expanded(
-                child: fieldTextStyle(name: 'Nacionalidade'),
+                child: fieldTextStyle(name: 'Nacionalidade', validate: true),
               ),
             ],
           ),
           Row(
             children: [
               Expanded(
-                child: fieldTextStyle(name: 'Natural de'),
+                child: fieldTextStyle(name: 'Natural de', validate: true),
               ),
               Expanded(
-                child: fieldTextStyle(name: 'Estado'),
+                child: fieldTextStyle(name: 'Estado', validate: true),
               ),
             ],
           ),
           Row(
             children: [
               Expanded(
-                child: fieldTextStyle(name: 'Estado Civil'),
+                child: fieldTextStyle(name: 'Estado Civil', validate: true),
               ),
               Expanded(
                 child: fieldTextStyle(name: 'Profissão'),
@@ -209,7 +322,10 @@ class Fields extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: fieldDataStyle(name: 'Batizou-se em', context: context),
+                child: fieldDataStyle(
+                    name: 'Batizou-se em',
+                    context: context,
+                    controller: dataBatismo),
               ),
               Expanded(
                 child: fieldTextStyle(name: 'Igreja/Local'),
@@ -219,13 +335,16 @@ class Fields extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: fieldDataStyle(name: 'Data Admissão', context: context),
+                child: fieldDataStyle(
+                    name: 'Data Admissão',
+                    context: context,
+                    controller: dataAdmissao),
               ),
               Expanded(
-                child: fieldTextStyle(name: 'RG'),
+                child: fieldTextStyle(name: 'RG', validate: true),
               ),
               Expanded(
-                child: fieldTextStyle(name: 'CPF'),
+                child: fieldTextStyle(name: 'CPF', validate: true),
               ),
             ],
           ),
@@ -239,18 +358,60 @@ class Fields extends StatelessWidget {
               ),
             ],
           ),
+          fieldTextStyle(name: 'Cargo'),
           Row(
             children: [
               Expanded(
-                child: fieldTextStyle(name: 'Já foi membro desta igreja?'),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 8.0, bottom: 10.0),
+                  child: SizedBox(
+                    height: 50,
+                    child: Row(
+                      children: [
+                        const Text('Já foi membro desta igreja?'),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 10.0),
+                            child: GetX<NewMemberController>(
+                              builder: (controller) => Row(
+                                children: [
+                                  Radio<String>(
+                                    value: 'S',
+                                    groupValue: controller.radio,
+                                    onChanged: (value) =>
+                                        controller.radio = value!,
+                                  ),
+                                  const Text('SIM'),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  Radio<String>(
+                                    value: 'N',
+                                    groupValue: controller.radio,
+                                    onChanged: (value) =>
+                                        controller.radio = value!,
+                                  ),
+                                  const Text('NÃO'),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ),
               Expanded(
-                child: fieldDataStyle(name: 'Data Saída', context: context),
+                child: fieldDataStyle(
+                    name: 'Data Saída',
+                    context: context,
+                    controller: dataSaida),
               ),
             ],
           ),
           fieldTextStyle(name: 'Procedência'),
-          fieldTextStyle(name: 'Endereço'),
+          fieldTextStyle(name: 'Endereço', validate: true),
         ],
       );
 }

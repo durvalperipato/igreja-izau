@@ -42,7 +42,7 @@ class LeftBarController extends GetxController {
     if (option is MembroOptions) {
       switch (option) {
         case MembroOptions.cadastrar:
-          widgetBody = const CadastrarMembro();
+          widgetBody = CadastrarMembro();
           break;
         case MembroOptions.alterar:
           widgetBody = const AlterarMembro();

@@ -6,6 +6,6 @@ class AppBinding extends Bindings {
   @override
   void dependencies() {
     Get.put<LeftBarController>(LeftBarController());
-    Get.put<NewMemberController>(NewMemberController());
+    Get.lazyPut<NewMemberController>(() => NewMemberController());
   }
 }
