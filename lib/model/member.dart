@@ -1,4 +1,4 @@
-class Member {
+/* class Member {
   String name;
   String filiacao_pai;
   String filiacao_mae;
@@ -52,3 +52,4 @@ class Member {
     required this.endereco,
   });
 }
+ */

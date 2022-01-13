@@ -7,15 +7,10 @@ class LeftBarController extends GetxController {
   final RxBool _pressMembros = false.obs;
   final RxBool _pressObreiros = false.obs;
 
-  final List<MembroOptions> _membroOptions = <MembroOptions>[];
-  final List<ObreiroOptions> _obreiroOptions = <ObreiroOptions>[];
-
   Widget? body;
 
   RxBool get pressMembros => _pressMembros;
   RxBool get pressObreiros => _pressObreiros;
-  List get membroOption => _membroOptions;
-  List get obreiroOption => _obreiroOptions;
 
   set pressMembros(RxBool isPressed) {
     pressMembros = isPressed;
