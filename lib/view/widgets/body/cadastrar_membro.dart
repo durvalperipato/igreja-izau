@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:igreja_izau/controller/new_member_controller.dart';
+import 'package:image_picker_web/image_picker_web.dart';
 
 import 'styles.dart';
 
@@ -44,8 +47,8 @@ class Header extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text('Matrícula: '),
-                    SizedBox(width: 80, child: TextFormField())
+                    const SizedBox(width: 80, child: Text('Matrícula')),
+                    SizedBox(width: 180, child: TextFormField())
                   ],
                 ),
               ),
@@ -53,8 +56,12 @@ class Header extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text('Congressão: '),
-                    SizedBox(width: 80, child: TextFormField())
+                    const SizedBox(
+                        width: 80,
+                        child: Text(
+                          'Congressão',
+                        )),
+                    SizedBox(width: 180, child: TextFormField())
                   ],
                 ),
               ),
@@ -77,28 +84,46 @@ class Fields extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-              child: _fields(context),
+              child: Container(
+                margin: const EdgeInsets.only(top: 10),
+                padding: const EdgeInsets.only(top: 10, right: 8),
+                decoration: BoxDecoration(border: Border.all()),
+                child: _fields(context),
+              ),
             ),
             SizedBox(
               width: 200,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Container(
-                    margin: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(border: Border.all()),
-                    height: 180,
-                    child: Center(
-                      child: IconButton(
-                        onPressed: () => '',
-                        icon: const Icon(Icons.photo_camera),
+                  Center(
+                    child: GetBuilder<NewMemberController>(
+                      builder: (controller) => Container(
+                        margin: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(border: Border.all()),
+                        height: 150,
+                        child: GestureDetector(
+                          child: Center(
+                            child: controller.child,
+                          ),
+                          onTap: () async {
+                            Image? result =
+                                await ImagePickerWeb.getImageAsWidget();
+
+                            if (result != null) {
+                              controller.loadImage(result.image);
+                            } else {
+                              controller.child = const Placeholder();
+                            }
+                          },
+                        ),
                       ),
                     ),
                   ),
                   Container(
                     margin: const EdgeInsets.all(12),
                     decoration: BoxDecoration(border: Border.all()),
-                    height: 600,
+                    height: 500,
                     child: Column(
                       children: [
                         const SizedBox(
@@ -106,7 +131,7 @@ class Fields extends StatelessWidget {
                           child: Text('OBS.:'),
                         ),
                         SizedBox(
-                          height: 568,
+                          height: 468,
                           child: TextFormField(
                             maxLines: null,
                             decoration: const InputDecoration(
