@@ -34,9 +34,8 @@ class LeftBar extends StatelessWidget {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  CadastrarMembroButton(),
-                  const AlterarMembroButton(),
-                  const ExcluirMembroButton(),
+                  cadastrarMembroButton(),
+                  listarMembrosPorCongrecacaoButton(),
                   const Divider(),
                 ],
               );

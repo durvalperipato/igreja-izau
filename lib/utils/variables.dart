@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-enum MembroOptions { cadastrar, alterar, deletar }
+enum MembroOptions { cadastrar, alterar, deletar, listar }
 enum ObreiroOptions { cadastrar, alterar, deletar }
 enum BasicOptions { dashboard }
 

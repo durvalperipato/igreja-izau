@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:igreja_izau/utils/variables.dart';
+import 'package:igreja_izau/view/widgets/screens/membro/listar_membro.dart';
 import 'package:igreja_izau/view/widgets/widgets.dart';
 
 class LeftBarController extends GetxController {
@@ -37,6 +38,11 @@ class LeftBarController extends GetxController {
     update();
   }
 
+  void listarMembros() {
+    body = _option(MembroOptions.listar);
+    update();
+  }
+
   Widget _option(Enum option) {
     Widget widgetBody = const Dashboard();
     if (option is MembroOptions) {
@@ -44,8 +50,8 @@ class LeftBarController extends GetxController {
         case MembroOptions.cadastrar:
           widgetBody = CadastrarMembro();
           break;
-        case MembroOptions.alterar:
-          widgetBody = const AlterarMembro();
+        case MembroOptions.listar:
+          widgetBody = const ListarMembros();
           break;
         case MembroOptions.deletar:
           widgetBody = const ExcluirMembro();
