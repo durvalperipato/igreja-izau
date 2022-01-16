@@ -77,11 +77,12 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: Dongle
+    - family: NotoSerif
       fonts:
-      - asset: assets/fonts/Dongle-Regular.ttf
-      - asset: assets/fonts/Dongle-Light.ttf
-      - asset: assets/fonts/Dongle-Bold.ttf
+      - asset: assets/fonts/NotoSerif-Bold.ttf
+      - asset: assets/fonts/NotoSerif-BoldItalic.ttf
+      - asset: assets/fonts/NotoSerif-Italic.ttf
+      - asset: assets/fonts/NotoSerif-Regular.ttf
         
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic

@@ -16,8 +16,8 @@ class MyApp extends StatelessWidget {
       initialBinding: AppBinding(),
       title: 'AD Porto',
       theme: ThemeData(
-        fontFamily: "Dongle",
-        primarySwatch: Colors.blue,
+        fontFamily: "NotoSerif",
+        primarySwatch: Colors.grey,
       ),
       home: const AppModule(),
     );

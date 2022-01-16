@@ -1,8 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:igreja_izau/controller/new_member_controller.dart';
+import 'package:igreja_izau/controller/member_controller.dart';
 import 'package:igreja_izau/mock/congregacao_mock.dart';
 import 'package:igreja_izau/model/member.dart';
 import 'package:igreja_izau/utils/connection.dart';
@@ -79,8 +78,7 @@ class CadastrarMembro extends StatelessWidget {
         dataOfNewMember.clear();
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('SERVIDOR NODE COM PROBLEMA PARA VARIAR\n\nErro: ' +
-              e.toString()),
+          content: Text('Erro: ' + e.toString()),
           backgroundColor: Colors.red,
         ));
       }
@@ -118,7 +116,7 @@ class CadastrarMembro extends StatelessWidget {
 class Header extends StatelessWidget {
   Header({Key? key}) : super(key: key);
 
-  final NewMemberController controller = Get.find();
+  final MemberController controller = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -237,7 +235,7 @@ class Fields extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Center(
-                    child: GetBuilder<NewMemberController>(
+                    child: GetBuilder<MemberController>(
                       builder: (controller) => Container(
                         margin: const EdgeInsets.all(10),
                         decoration: BoxDecoration(border: Border.all()),
@@ -260,27 +258,140 @@ class Fields extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Container(
-                    padding: const EdgeInsets.all(10),
-                    margin: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(border: Border.all()),
-                    height: 680,
-                    child: Column(
-                      children: [
-                        const SizedBox(
-                          height: 30,
-                          child: Text('OBS.:'),
-                        ),
-                        SizedBox(
-                          height: 628,
-                          child: TextFormField(
-                            maxLines: null,
-                            decoration: const InputDecoration(
-                                border: InputBorder.none,
-                                contentPadding: EdgeInsets.all(5)),
+                  GetX<MemberController>(
+                    builder: (controller) => Container(
+                      padding: const EdgeInsets.all(10),
+                      margin: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        border: Border.all(),
+                        color: controller.memberStatus == MemberStatus.ativo
+                            ? Colors.green[200]
+                            : Colors.red[200],
+                      ),
+                      height: 750,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          const Center(
+                            child: Text(
+                              'STATUS',
+                              style: TextStyle(fontSize: 20),
+                            ),
                           ),
-                        ),
-                      ],
+                          Center(
+                            child: Text(
+                                controller.memberStatus == MemberStatus.ativo
+                                    ? 'ATIVO'
+                                    : 'INATIVO'),
+                          ),
+                          TextButton(
+                              onPressed: () => showDialog(
+                                    context: context,
+                                    builder: (context) => StatefulBuilder(
+                                      builder: (context, setState) =>
+                                          AlertDialog(
+                                        title: const Text(
+                                            'Deseja realmente alterar\no status do membro?'),
+                                        content: SingleChildScrollView(
+                                          child: Column(
+                                            children: [
+                                              const SizedBox(
+                                                height: 20,
+                                              ),
+                                              RichText(
+                                                text: TextSpan(
+                                                    text: 'Status atual: ',
+                                                    children: [
+                                                      TextSpan(
+                                                        text: controller
+                                                            .memberStatusToString,
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            color: controller
+                                                                        .memberStatus ==
+                                                                    MemberStatus
+                                                                        .ativo
+                                                                ? Colors.green
+                                                                : Colors.red),
+                                                      ),
+                                                    ]),
+                                              ),
+                                              const Divider(),
+                                              const SizedBox(
+                                                height: 10,
+                                              ),
+                                              RichText(
+                                                text: TextSpan(
+                                                    text: 'Novo status: ',
+                                                    children: [
+                                                      TextSpan(
+                                                        text: controller
+                                                                    .memberStatus ==
+                                                                MemberStatus
+                                                                    .ativo
+                                                            ? 'INATIVO'
+                                                            : 'ATIVO',
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            color: controller
+                                                                        .memberStatus ==
+                                                                    MemberStatus
+                                                                        .ativo
+                                                                ? Colors.red
+                                                                : Colors.green),
+                                                      ),
+                                                    ]),
+                                              ),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  const Text('Motivo: '),
+                                                  const SizedBox(
+                                                    width: 20,
+                                                  ),
+                                                  DropdownButton(
+                                                    value: controller.codigo,
+                                                    items: codigos.entries
+                                                        .map((e) => DropdownMenuItem(
+                                                            value: e.key,
+                                                            child: Text(e.key
+                                                                    .toString() +
+                                                                ": " +
+                                                                e.value[
+                                                                    'definicao']!)))
+                                                        .toList(),
+                                                    onChanged: (value) =>
+                                                        setState(
+                                                      () => controller.codigo =
+                                                          value as int,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              const Divider(),
+                                            ],
+                                          ),
+                                        ),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () =>
+                                                Navigator.pop(context),
+                                            child: const Text('Cancelar'),
+                                          ),
+                                          TextButton(
+                                            onPressed: () => '',
+                                            child: const Text('Confirmar'),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                              child: const Text('Alterar Status'))
+                        ],
+                      ),
                     ),
                   ),
                 ],
@@ -404,7 +515,7 @@ class Fields extends StatelessWidget {
                         Expanded(
                           child: Padding(
                             padding: const EdgeInsets.only(left: 10.0),
-                            child: GetX<NewMemberController>(
+                            child: GetX<MemberController>(
                               builder: (controller) => Row(
                                 children: [
                                   Radio<String>(
@@ -450,3 +561,44 @@ class Fields extends StatelessWidget {
         ],
       );
 }
+
+
+/*                       Center(
+                            child: DropdownButton<MemberStatus>(
+                              underline: Container(
+                                height: 1,
+                                color: Colors.black,
+                              ),
+                              value: controller.memberStatus,
+                              items: [MemberStatus.ativo, MemberStatus.inativo]
+                                  .map((value) => DropdownMenuItem(
+                                        child: Center(
+                                          child: Text(
+                                            value == MemberStatus.ativo
+                                                ? 'ATIVO'
+                                                : 'INATIVO',
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                        value: value,
+                                      ))
+                                  .toList(),
+                              onChanged: (value) =>
+                                  controller.memberStatus = value!,
+                            ),
+                          ),
+                          Center(
+                            child: DropdownButton(
+                              value: controller.codigo,
+                              items: codigos.entries
+                                  .map((e) => DropdownMenuItem(
+                                      value: e.key,
+                                      child: Text(e.key.toString() +
+                                          ":" +
+                                          e.value['definicao']!)))
+                                  .toList(),
+                              onChanged: (value) =>
+                                  controller.codigo = value as int,
+                            ),
+                          ),
+     */
