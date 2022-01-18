@@ -6,9 +6,21 @@ enum ObreiroOptions { cadastrar, alterar, deletar }
 enum BasicOptions { dashboard }
 
 Map<String, dynamic> dataOfNewMember = {};
+
 Map<int, Map<String, String>> codigos = {
-  001: {"definicao": "Def01", "descricao": "uhiasuheda iuhiacuen poiroijrt"},
-  002: {"definicao": "Def02", "descricao": "uhiasuheda iuhiacuen poiroijrt"}
+  001: {
+    "definicao": "Definicao 01",
+    "descricao": "uhiasuheda iuhiacuen poiroijrt"
+  },
+  002: {
+    "definicao": "Definicao 02",
+    "descricao": "iuwyeruiyweuwuiecnwiuecnwuienuiwyreuiwheuiwer"
+  },
+  003: {
+    "definicao": "Definicao 03",
+    "descricao":
+        "JSDNNVINSKJDNVKJSDNVKJSNDVKJSDNVKJSNVKJSNDVKJSNDKJVNSKJVNSKJDNERNIJRNIUNCIUERNVIUNERIUVNERIUVNIEUVNIUERNVIUERNVIUERNVOINSIDNVLKSDNKJVNSD,F KJSDVNKJSDBVSDNVKJSDNBVLNSDIGORV JKNEVONEROVNEOIRNV"
+  }
 };
 
 TextEditingController dataNascimento = TextEditingController();

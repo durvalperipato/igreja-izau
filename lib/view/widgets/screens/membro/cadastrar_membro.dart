@@ -302,8 +302,7 @@ class Formulario extends StatelessWidget {
                       decoration: BoxDecoration(border: Border.all()),
                       padding: const EdgeInsets.all(10),
                       margin: const EdgeInsets.all(10),
-                      width: 200,
-                      height: 300,
+                      width: 250,
                       child: Column(
                         children: [
                           const Text('CÓDIGO'),
@@ -322,18 +321,40 @@ class Formulario extends StatelessWidget {
                                   onChanged: (value) =>
                                       controller.codigo = value as int,
                                 ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                    top: 10.0,
+                                    bottom: 20,
+                                  ),
+                                  child: SingleChildScrollView(
+                                    child: Text(
+                                        codigos[controller.codigo]!['descricao']
+                                            .toString()),
+                                  ),
+                                ),
                                 ElevatedButton(
                                     onPressed: () {
-                                      dataOfNewMember['historico']
-                                          [controller.codigo];
-                                      historicoController.text =
-                                          controller.codigo.toString();
+                                      int codigoSelecionado = controller.codigo;
+                                      String? definicao = codigos[
+                                          codigoSelecionado]!['definicao'];
+                                      if (definicao != null) {
+                                        dataOfNewMember['historico'] = {
+                                          codigoSelecionado.toString():
+                                              definicao
+                                        };
+
+                                        dataOfNewMember['historico']
+                                            .forEach((key, value) {
+                                          historicoController.text +=
+                                              key + ': ' + value + '\n';
+                                        });
+                                      }
                                     },
-                                    child: const Text('Incluir no histórico'),
+                                    child: const Text('Incluir'),
                                     style: ButtonStyle(
                                         backgroundColor:
                                             MaterialStateProperty.all(
-                                                Colors.green))),
+                                                Colors.blue[600]))),
                               ],
                             ),
                           ),
@@ -511,23 +532,46 @@ class Formulario extends StatelessWidget {
 }
 
 class Historico extends StatelessWidget {
-  const Historico({Key? key}) : super(key: key);
+  Historico({Key? key}) : super(key: key);
+
+  final GlobalKey<FormState> historicKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(top: 10),
-      padding: const EdgeInsets.only(top: 10, right: 8),
+      padding: const EdgeInsets.only(top: 10),
       decoration: BoxDecoration(border: Border.all()),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Histórico'),
-          const Divider(),
-          TextFormField(
-            controller: historicoController,
-            maxLines: null,
+          Container(
+            padding: const EdgeInsets.only(bottom: 10),
+            decoration: const BoxDecoration(
+              border: Border(
+                bottom: BorderSide(color: Colors.grey),
+              ),
+            ),
+            child: const Center(
+              child: Text(
+                'HISTÓRICO',
+                style: TextStyle(letterSpacing: 20),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Form(
+              key: historicKey,
+              child: TextFormField(
+                onSaved: (newValue) {
+                  print(newValue);
+                },
+                controller: historicoController,
+                maxLines: null,
+              ),
+            ),
           )
         ],
       ),
