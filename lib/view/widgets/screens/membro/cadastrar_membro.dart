@@ -96,7 +96,7 @@ class CadastrarMembro extends StatelessWidget {
           children: [
             Header(),
             const Divider(),
-            const Fields(),
+            const Formulario(),
             const Divider(),
             Container(
               margin: const EdgeInsets.symmetric(vertical: 15),
@@ -211,196 +211,144 @@ class Header extends StatelessWidget {
   }
 }
 
-class Fields extends StatelessWidget {
-  const Fields({Key? key}) : super(key: key);
+class Formulario extends StatelessWidget {
+  const Formulario({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: SingleChildScrollView(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: Container(
-                margin: const EdgeInsets.only(top: 10),
-                padding: const EdgeInsets.only(top: 10, right: 8),
-                decoration: BoxDecoration(border: Border.all()),
-                child: _fields(context),
+        child: SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Container(
+                  margin: const EdgeInsets.only(top: 10),
+                  padding: const EdgeInsets.only(top: 10, right: 8),
+                  decoration: BoxDecoration(border: Border.all()),
+                  child: _fields(context),
+                ),
               ),
-            ),
-            SizedBox(
-              width: 200,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Center(
-                    child: GetBuilder<MemberController>(
-                      builder: (controller) => Container(
-                        margin: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(border: Border.all()),
-                        height: 150,
-                        child: GestureDetector(
-                          child: Center(
-                            child: controller.child,
-                          ),
-                          onTap: () async {
-                            Image? result =
-                                await ImagePickerWeb.getImageAsWidget();
+              SizedBox(
+                width: 200,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Center(
+                      child: GetBuilder<MemberController>(
+                        builder: (controller) => Container(
+                          margin: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(border: Border.all()),
+                          height: 150,
+                          child: GestureDetector(
+                            child: Center(
+                              child: controller.child,
+                            ),
+                            onTap: () async {
+                              Image? result =
+                                  await ImagePickerWeb.getImageAsWidget();
 
-                            if (result != null) {
-                              controller.loadImage(result.image);
-                            } else {
-                              controller.child = const Placeholder();
-                            }
-                          },
+                              if (result != null) {
+                                controller.loadImage(result.image);
+                              } else {
+                                controller.child = const Placeholder();
+                              }
+                            },
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  GetX<MemberController>(
-                    builder: (controller) => Container(
-                      padding: const EdgeInsets.all(10),
-                      margin: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        border: Border.all(),
-                        color: controller.memberStatus == MemberStatus.ativo
-                            ? Colors.green[200]
-                            : Colors.red[200],
-                      ),
-                      height: 750,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          const Center(
-                            child: Text(
-                              'STATUS',
-                              style: TextStyle(fontSize: 20),
+                    GetX<MemberController>(
+                      builder: (controller) => Container(
+                        width: 200,
+                        padding: const EdgeInsets.all(10),
+                        margin: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          border: Border.all(),
+                          color: controller.memberStatus == MemberStatus.ativo
+                              ? Colors.green[200]
+                              : Colors.red[200],
+                        ),
+                        height: 100,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            const Center(
+                              child: Text(
+                                'STATUS',
+                                style: TextStyle(fontSize: 16),
+                              ),
                             ),
-                          ),
-                          Center(
-                            child: Text(
+                            Center(
+                              child: Text(
                                 controller.memberStatus == MemberStatus.ativo
                                     ? 'ATIVO'
-                                    : 'INATIVO'),
+                                    : 'INATIVO',
+                                style: const TextStyle(
+                                  fontSize: 30,
+                                  letterSpacing: 10,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(border: Border.all()),
+                      padding: const EdgeInsets.all(10),
+                      margin: const EdgeInsets.all(10),
+                      width: 200,
+                      height: 300,
+                      child: Column(
+                        children: [
+                          const Text('CÓDIGO'),
+                          GetX<MemberController>(
+                            builder: (controller) => Column(
+                              children: [
+                                DropdownButton(
+                                  value: controller.codigo,
+                                  items: codigos.entries
+                                      .map((e) => DropdownMenuItem(
+                                          value: e.key,
+                                          child: Text(e.key.toString() +
+                                              ": " +
+                                              e.value['definicao']!)))
+                                      .toList(),
+                                  onChanged: (value) =>
+                                      controller.codigo = value as int,
+                                ),
+                                ElevatedButton(
+                                    onPressed: () {
+                                      dataOfNewMember['historico']
+                                          [controller.codigo];
+                                      historicoController.text =
+                                          controller.codigo.toString();
+                                    },
+                                    child: const Text('Incluir no histórico'),
+                                    style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all(
+                                                Colors.green))),
+                              ],
+                            ),
                           ),
-                          TextButton(
-                              onPressed: () => showDialog(
-                                    context: context,
-                                    builder: (context) => StatefulBuilder(
-                                      builder: (context, setState) =>
-                                          AlertDialog(
-                                        title: const Text(
-                                            'Deseja realmente alterar\no status do membro?'),
-                                        content: SingleChildScrollView(
-                                          child: Column(
-                                            children: [
-                                              const SizedBox(
-                                                height: 20,
-                                              ),
-                                              RichText(
-                                                text: TextSpan(
-                                                    text: 'Status atual: ',
-                                                    children: [
-                                                      TextSpan(
-                                                        text: controller
-                                                            .memberStatusToString,
-                                                        style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            color: controller
-                                                                        .memberStatus ==
-                                                                    MemberStatus
-                                                                        .ativo
-                                                                ? Colors.green
-                                                                : Colors.red),
-                                                      ),
-                                                    ]),
-                                              ),
-                                              const Divider(),
-                                              const SizedBox(
-                                                height: 10,
-                                              ),
-                                              RichText(
-                                                text: TextSpan(
-                                                    text: 'Novo status: ',
-                                                    children: [
-                                                      TextSpan(
-                                                        text: controller
-                                                                    .memberStatus ==
-                                                                MemberStatus
-                                                                    .ativo
-                                                            ? 'INATIVO'
-                                                            : 'ATIVO',
-                                                        style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            color: controller
-                                                                        .memberStatus ==
-                                                                    MemberStatus
-                                                                        .ativo
-                                                                ? Colors.red
-                                                                : Colors.green),
-                                                      ),
-                                                    ]),
-                                              ),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  const Text('Motivo: '),
-                                                  const SizedBox(
-                                                    width: 20,
-                                                  ),
-                                                  DropdownButton(
-                                                    value: controller.codigo,
-                                                    items: codigos.entries
-                                                        .map((e) => DropdownMenuItem(
-                                                            value: e.key,
-                                                            child: Text(e.key
-                                                                    .toString() +
-                                                                ": " +
-                                                                e.value[
-                                                                    'definicao']!)))
-                                                        .toList(),
-                                                    onChanged: (value) =>
-                                                        setState(
-                                                      () => controller.codigo =
-                                                          value as int,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              const Divider(),
-                                            ],
-                                          ),
-                                        ),
-                                        actions: [
-                                          TextButton(
-                                            onPressed: () =>
-                                                Navigator.pop(context),
-                                            child: const Text('Cancelar'),
-                                          ),
-                                          TextButton(
-                                            onPressed: () => '',
-                                            child: const Text('Confirmar'),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                              child: const Text('Alterar Status'))
                         ],
                       ),
                     ),
-                  ),
-                ],
-              ),
-            )
-          ],
-        ),
+                  ],
+                ),
+              )
+            ],
+          ),
+          Historico(),
+        ],
       ),
-    );
+    ));
   }
 
   _fields(BuildContext context) => Column(
@@ -562,43 +510,134 @@ class Fields extends StatelessWidget {
       );
 }
 
+class Historico extends StatelessWidget {
+  const Historico({Key? key}) : super(key: key);
 
-/*                       Center(
-                            child: DropdownButton<MemberStatus>(
-                              underline: Container(
-                                height: 1,
-                                color: Colors.black,
-                              ),
-                              value: controller.memberStatus,
-                              items: [MemberStatus.ativo, MemberStatus.inativo]
-                                  .map((value) => DropdownMenuItem(
-                                        child: Center(
-                                          child: Text(
-                                            value == MemberStatus.ativo
-                                                ? 'ATIVO'
-                                                : 'INATIVO',
-                                            textAlign: TextAlign.center,
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(top: 10),
+      padding: const EdgeInsets.only(top: 10, right: 8),
+      decoration: BoxDecoration(border: Border.all()),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text('Histórico'),
+          const Divider(),
+          TextFormField(
+            controller: historicoController,
+            maxLines: null,
+          )
+        ],
+      ),
+    );
+  }
+}
+/*               TextButton(
+                              onPressed: () => showDialog(
+                                    context: context,
+                                    builder: (context) => StatefulBuilder(
+                                      builder: (context, setState) =>
+                                          AlertDialog(
+                                        title: const Text(
+                                            'Deseja realmente alterar\no status do membro?'),
+                                        content: SingleChildScrollView(
+                                          child: Column(
+                                            children: [
+                                              const SizedBox(
+                                                height: 20,
+                                              ),
+                                              RichText(
+                                                text: TextSpan(
+                                                    text: 'Status atual: ',
+                                                    children: [
+                                                      TextSpan(
+                                                        text: controller
+                                                            .memberStatusToString,
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            color: controller
+                                                                        .memberStatus ==
+                                                                    MemberStatus
+                                                                        .ativo
+                                                                ? Colors.green
+                                                                : Colors.red),
+                                                      ),
+                                                    ]),
+                                              ),
+                                              const Divider(),
+                                              const SizedBox(
+                                                height: 10,
+                                              ),
+                                              RichText(
+                                                text: TextSpan(
+                                                    text: 'Novo status: ',
+                                                    children: [
+                                                      TextSpan(
+                                                        text: controller
+                                                                    .memberStatus ==
+                                                                MemberStatus
+                                                                    .ativo
+                                                            ? 'INATIVO'
+                                                            : 'ATIVO',
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            color: controller
+                                                                        .memberStatus ==
+                                                                    MemberStatus
+                                                                        .ativo
+                                                                ? Colors.red
+                                                                : Colors.green),
+                                                      ),
+                                                    ]),
+                                              ),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  const Text('Motivo: '),
+                                                  const SizedBox(
+                                                    width: 20,
+                                                  ),
+                                                  DropdownButton(
+                                                    value: controller.codigo,
+                                                    items: codigos.entries
+                                                        .map((e) => DropdownMenuItem(
+                                                            value: e.key,
+                                                            child: Text(e.key
+                                                                    .toString() +
+                                                                ": " +
+                                                                e.value[
+                                                                    'definicao']!)))
+                                                        .toList(),
+                                                    onChanged: (value) =>
+                                                        setState(
+                                                      () => controller.codigo =
+                                                          value as int,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              const Divider(),
+                                            ],
                                           ),
                                         ),
-                                        value: value,
-                                      ))
-                                  .toList(),
-                              onChanged: (value) =>
-                                  controller.memberStatus = value!,
-                            ),
-                          ),
-                          Center(
-                            child: DropdownButton(
-                              value: controller.codigo,
-                              items: codigos.entries
-                                  .map((e) => DropdownMenuItem(
-                                      value: e.key,
-                                      child: Text(e.key.toString() +
-                                          ":" +
-                                          e.value['definicao']!)))
-                                  .toList(),
-                              onChanged: (value) =>
-                                  controller.codigo = value as int,
-                            ),
-                          ),
-     */
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () =>
+                                                Navigator.pop(context),
+                                            child: const Text('Cancelar'),
+                                          ),
+                                          TextButton(
+                                            onPressed: () => '',
+                                            child: const Text('Confirmar'),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                              child: const Text('Alterar Status'))
+             */

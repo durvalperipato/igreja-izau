@@ -38,5 +38,6 @@ var dados = {
   "procedencia": "teste",
   "endereco": "rua gisto paulo",
   "imagemURL": "http://imag21544.com",
-  "observacao": "primeiro cadastro do sistema"
+  "observacao": "primeiro cadastro do sistema",
+  "historico": {"001": "iushiushufhsduif", "002": "oiehgheirughieurhugi"},
 };

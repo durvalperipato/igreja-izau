@@ -15,3 +15,4 @@ TextEditingController dataNascimento = TextEditingController();
 TextEditingController dataBatismo = TextEditingController();
 TextEditingController dataAdmissao = TextEditingController();
 TextEditingController dataSaida = TextEditingController();
+TextEditingController historicoController = TextEditingController();

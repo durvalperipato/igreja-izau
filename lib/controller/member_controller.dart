@@ -24,6 +24,10 @@ class MemberController extends GetxController {
     _codigo.value = codigo;
   }
 
+  void updateHistorico() {
+    update();
+  }
+
   void loadImage(ImageProvider image) {
     child = Image(
       image: image,
