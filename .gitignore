@@ -8,6 +8,11 @@
 .buildlog/
 .history
 .svn/
+migrate_working_dir/
+.metadata
+analysis_options.yaml
+pubspec.lock
+web
 
 # IntelliJ related
 *.iml
@@ -30,17 +35,6 @@
 .pub-cache/
 .pub/
 /build/
-/test/
-/android/
-/ios/
-/web/
-/windows/
-.metadata
-analysis_options.yaml
-pubspec.lock
-.firebaserc
-firebase.json
-.firebase/
 
 # Web related
 lib/generated_plugin_registrant.dart

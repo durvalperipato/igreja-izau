@@ -1,25 +1,16 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:igreja_izau/core/app_binding.dart';
-import 'package:igreja_izau/core/app_module.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:igreja_izau/app/app_module.dart';
+import 'package:igreja_izau/app/app_widget.dart';
 
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return GetMaterialApp(
-      initialBinding: AppBinding(),
-      title: 'AD Porto',
-      theme: ThemeData(
-        fontFamily: "NotoSerif",
-        primarySwatch: Colors.grey,
-      ),
-      home: const AppModule(),
-    );
-  }
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(
+    ModularApp(
+      module: AppModule(),
+      child: const AppWidget(),
+    ),
+  );
 }
