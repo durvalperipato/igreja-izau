@@ -1,27 +1,34 @@
 import 'package:dio/dio.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:igreja_izau/app/core/exceptions/auth_exception.dart';
 import 'package:igreja_izau/app/repositories/auth/auth_repository.dart';
 
-class AuthRepositoryImpl implements AuthRepository {
-  final FirebaseAuth _firebaseAuth;
+const String tokenPath = "https://ad-porto.herokuapp.com/tokenUser";
 
-  AuthRepositoryImpl({required FirebaseAuth firebaseAuth})
-      : _firebaseAuth = firebaseAuth;
+class AuthRepositoryImpl implements AuthRepository {
+  AuthRepositoryImpl();
 
   @override
-  Future<User?> login({required String email, required String password}) async {
+  Future<String?> login(
+      {required String email, required String password}) async {
     try {
       final dio = Dio();
-      final response = await dio.postUri(Uri.parse('ENDPOINT DO IZAU'));
+
+      final response = await dio.post(
+        tokenPath,
+        options: Options(
+          contentType: "application/json",
+        ),
+        data: {
+          "emailUser": email,
+          "passwordUser": password,
+        },
+      );
       if (response.statusCode == 200) {
         final token = response.data.toString();
-        final userCredential = await _firebaseAuth.signInWithCustomToken(token);
-        return userCredential.user;
+        return token;
       }
-      throw AuthException(errorMessage: 'Erro ao gerar o token');
+      throw Exception('Erro ao realizar o login');
     } on Exception {
-      throw AuthException(errorMessage: 'Erro ao realizar o login');
+      throw Exception('Erro ao realizar o login');
     }
   }
 }

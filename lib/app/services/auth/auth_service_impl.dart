@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:igreja_izau/app/repositories/auth/auth_repository.dart';
 import 'package:igreja_izau/app/services/auth/auth_service.dart';
 
@@ -9,7 +8,8 @@ class AuthServiceImpl implements AuthService {
       : _authRepository = authRepository;
 
   @override
-  Future<User?> login({required String email, required String password}) async {
+  Future<String?> login(
+      {required String email, required String password}) async {
     return _authRepository.login(email: email, password: password);
   }
 }

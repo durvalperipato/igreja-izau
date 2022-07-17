@@ -1,28 +1,43 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:igreja_izau/app/modules/home/widgets/body.dart';
+import 'controller/home_controller.dart';
+import 'widgets/menu_left_navigation.dart';
+import 'widgets/menu_top.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+  final HomeController controller;
+  const HomePage({
+    Key? key,
+    required this.controller,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Home Page'),
-      ),
-      body: Center(
-        child: Column(
-          children: [
-            const Text('Login Efetuado com sucesso'),
-            const SizedBox(
-              height: 50,
-            ),
-            TextButton(
-              onPressed: () {},
-              child: const Text('Sair'),
-            ),
-          ],
-        ),
-      ),
-    );
+        body: Column(
+      children: [
+        const MenuTop(),
+        Expanded(
+          child: Row(
+            children: [
+              BlocSelector<HomeController, HomeState, int>(
+                bloc: controller,
+                selector: (state) => state.selectedIndex,
+                builder: (context, index) => MenuLeftNavigation(
+                  selectedIndex: index,
+                ),
+              ),
+              BlocSelector<HomeController, HomeState, Widget>(
+                bloc: controller,
+                selector: (state) => state.child,
+                builder: (_, child) => Body(child: child),
+              ),
+            ],
+          ),
+        )
+      ],
+    ));
   }
 }

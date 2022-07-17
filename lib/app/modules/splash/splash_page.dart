@@ -1,6 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_modular/flutter_modular.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({Key? key}) : super(key: key);
@@ -12,12 +10,8 @@ class SplashPage extends StatefulWidget {
 class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
-    FirebaseAuth.instance.authStateChanges().listen((user) {
-      if (user != null) {
-        Modular.to.pushNamed('/home');
-      } else {
-        Modular.to.pushNamed('/login');
-      }
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Navigator.pushNamed(context, '/home/');
     });
     super.initState();
   }

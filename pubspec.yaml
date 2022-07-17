@@ -36,8 +36,6 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_bloc: ^8.0.1
   flutter_modular: ^5.0.3
-  firebase_auth: ^3.4.1
-  firebase_core: ^1.19.1
   dio: ^4.0.6
   modular_bloc_bind: ^1.0.1
   validatorless: ^1.2.1
@@ -68,7 +66,7 @@ flutter:
   # assets:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
-
+  
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
@@ -91,6 +89,19 @@ flutter:
   #       - asset: fonts/TrajanPro.ttf
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
-  #
+  assets:
+    - assets/images/
+
+  fonts:
+    - family: NotoSerif
+      fonts:
+      - asset: assets/fonts/NotoSerif-Regular.ttf
+      - asset: assets/fonts/NotoSerif-Italic.ttf
+        style: italic
+      - asset: assets/fonts/NotoSerif-Bold.ttf
+        weight: 500
+      - asset: assets/fonts/NotoSerif-BoldItalic.ttf
+        style: italic
+        weight: 500  
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

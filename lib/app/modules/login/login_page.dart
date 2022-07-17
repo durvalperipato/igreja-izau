@@ -14,7 +14,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
-  final _emailEC = TextEditingController();
+  final _emailEC = TextEditingController(text: "anesia@adporto.com.br");
   final _passwordEC = TextEditingController();
 
   @override
