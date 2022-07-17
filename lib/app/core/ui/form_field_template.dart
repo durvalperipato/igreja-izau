@@ -7,6 +7,8 @@ class FormFieldTemplate extends StatelessWidget {
   final bool readOnly;
   final Icon? suffixIcon;
   final VoidCallback? onTap;
+  final String? Function(String?)? validator;
+  final FocusNode? focusNode;
   const FormFieldTemplate({
     Key? key,
     required this.controller,
@@ -14,6 +16,8 @@ class FormFieldTemplate extends StatelessWidget {
     this.readOnly = false,
     this.suffixIcon,
     this.onTap,
+    this.validator,
+    this.focusNode,
   }) : super(key: key);
 
   @override
@@ -23,7 +27,9 @@ class FormFieldTemplate extends StatelessWidget {
       child: TextFormField(
         onTap: onTap,
         readOnly: readOnly,
+        focusNode: focusNode,
         controller: controller,
+        validator: validator,
         decoration: InputDecoration(
           border: const OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(10)),

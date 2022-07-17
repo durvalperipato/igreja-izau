@@ -8,14 +8,16 @@ class DropFormFieldTemplate extends StatelessWidget {
   final VoidCallback? onTap;
   final void Function(String? value) onChanged;
   final List<String> items;
+  final String? value;
   const DropFormFieldTemplate({
     Key? key,
     required this.label,
-    required this.onChanged,
-    required this.items,
     this.readOnly = false,
     this.suffixIcon,
     this.onTap,
+    required this.onChanged,
+    required this.items,
+    this.value,
   }) : super(key: key);
 
   @override
@@ -23,6 +25,7 @@ class DropFormFieldTemplate extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5),
       child: DropdownButtonFormField(
+        value: value,
         onTap: onTap,
         items: items
             .map((value) => DropdownMenuItem(value: value, child: Text(value)))

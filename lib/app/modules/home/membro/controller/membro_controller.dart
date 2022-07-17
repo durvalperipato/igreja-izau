@@ -5,10 +5,10 @@ import 'package:igreja_izau/app/services/member/member_service.dart';
 part 'membro_state.dart';
 
 class MemberController extends Cubit<MembroState> {
-  final MemberService _memeberService;
+  final MemberService _memberService;
 
   MemberController({required MemberService memberService})
-      : _memeberService = memberService,
+      : _memberService = memberService,
         super(MembroState.initial());
 
   Future<void> sendData() async {}
@@ -16,7 +16,7 @@ class MemberController extends Cubit<MembroState> {
   Future<void> getCitiesByUF({required String uF}) async {
     try {
       final citiesByUF = <String>[];
-      final cities = await _memeberService.getCities(uF: uF);
+      final cities = await _memberService.getCities(uF: uF);
       for (var city in cities) {
         citiesByUF.add(city.nameCity);
       }

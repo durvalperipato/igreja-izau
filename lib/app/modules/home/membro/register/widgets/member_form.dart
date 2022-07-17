@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:igreja_izau/app/core/ui/categories_form_field_decoration.dart';
 import 'package:igreja_izau/app/core/ui/drop_form_field_template.dart';
 import 'package:igreja_izau/app/core/ui/form_field_template.dart';
-import 'package:igreja_izau/app/modules/membro/controller/membro_controller.dart';
+import 'package:igreja_izau/app/modules/home/membro/controller/membro_controller.dart';
 
 class MemberForm extends StatefulWidget {
   final MemberController controller;
@@ -84,7 +84,15 @@ class _MemberFormState extends State<MemberForm> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      FormFieldTemplate(controller: _nameEC, label: 'Nome'),
+                      FormFieldTemplate(
+                          controller: _nameEC,
+                          label: 'Nome',
+                          validator: (value) {
+                            if (value != null && value.isNotEmpty) {
+                              return null;
+                            }
+                            return 'Campo obrigatório';
+                          }),
                       Row(
                         children: [
                           Expanded(
@@ -121,51 +129,65 @@ class _MemberFormState extends State<MemberForm> {
                       ),
                       FormFieldTemplate(
                           controller: _addressEC, label: 'Endereço'),
-                      DropFormFieldTemplate(
-                        label: 'Estado',
-                        onChanged: (value) {
-                          if (value != null) {
-                            _stateEC.text = value;
-                          }
-                        },
-                        items: const [
-                          'AC',
-                          'AL',
-                          'AP',
-                          'AM',
-                          'BA',
-                          'CE',
-                          'DF',
-                          'ES',
-                          'GO',
-                          'MA',
-                          'MT',
-                          'MS',
-                          'MG',
-                          'PA',
-                          'PB',
-                          'PR',
-                          'PE',
-                          'PI',
-                          'RJ',
-                          'RN',
-                          'RS',
-                          'RO',
-                          'RR',
-                          'SC',
-                          'SP',
-                          'SE',
-                          'TO',
+                      Row(
+                        children: [
+                          Expanded(
+                            child: DropFormFieldTemplate(
+                              label: 'Estado',
+                              onChanged: (value) {
+                                if (value != null) {
+                                  _stateEC.text = value;
+                                  widget.controller.getCitiesByUF(uF: value);
+                                }
+                              },
+                              items: const [
+                                'AC',
+                                'AL',
+                                'AP',
+                                'AM',
+                                'BA',
+                                'CE',
+                                'DF',
+                                'ES',
+                                'GO',
+                                'MA',
+                                'MT',
+                                'MS',
+                                'MG',
+                                'PA',
+                                'PB',
+                                'PR',
+                                'PE',
+                                'PI',
+                                'RJ',
+                                'RN',
+                                'RS',
+                                'RO',
+                                'RR',
+                                'SC',
+                                'SP',
+                                'SE',
+                                'TO',
+                              ],
+                            ),
+                          ),
+                          const SizedBox(width: 20),
+                          Expanded(
+                            child: BlocSelector<MemberController, MembroState,
+                                List<String>>(
+                              bloc: widget.controller,
+                              selector: (state) => state.cities,
+                              builder: (context, cities) =>
+                                  DropFormFieldTemplate(
+                                      value:
+                                          cities.isEmpty ? null : cities.first,
+                                      items: cities,
+                                      onChanged: (value) =>
+                                          _naturalityEC.text = value ?? '',
+                                      label: 'Cidade'),
+                            ),
+                          ),
                         ],
-                      ),
-                      BlocSelector<MemberController, MembroState, List<String>>(
-                        bloc: widget.controller,
-                        selector: (state) => state.cities,
-                        builder: (context, cities) => DropFormFieldTemplate(
-                            items: cities,
-                            onChanged: (value) =>
-                                _naturalityEC.text = value ?? '',
-                            label: 'Cidade'),
                       ),
                     ],
                   ),
@@ -234,32 +256,33 @@ class _MemberFormState extends State<MemberForm> {
           ),
         ),
         Padding(
-            padding: const EdgeInsets.only(right: 20, top: 50),
-            child: SizedBox(
-              width: 200,
-              child: Column(
-                children: const [
-                  SizedBox(
-                    height: 200,
-                    child: Placeholder(),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  SizedBox(
-                    height: 100,
-                    child: Placeholder(),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  SizedBox(
-                    height: 400,
-                    child: Placeholder(),
-                  ),
-                ],
-              ),
-            ))
+          padding: const EdgeInsets.only(right: 20, top: 50),
+          child: SizedBox(
+            width: 200,
+            child: Column(
+              children: const [
+                SizedBox(
+                  height: 200,
+                  child: Placeholder(),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                SizedBox(
+                  height: 100,
+                  child: Placeholder(),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                SizedBox(
+                  height: 400,
+                  child: Placeholder(),
+                ),
+              ],
+            ),
+          ),
+        ),
       ],
     );
   }

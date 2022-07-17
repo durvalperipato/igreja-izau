@@ -14,7 +14,9 @@ class HomeState {
   });
 
   factory HomeState.initial() => HomeState._(
-      status: HomeStatus.initial, selectedIndex: 0, child: const MembroPage());
+      status: HomeStatus.initial,
+      selectedIndex: 0,
+      child: MemberRegisterPage(controller: Modular.get()));
 
   HomeState copyWith({HomeStatus? status, int? selectedIndex, Widget? child}) =>
       HomeState._(

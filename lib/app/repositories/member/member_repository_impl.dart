@@ -10,8 +10,8 @@ class MemberRepositoryImpl implements MemberRepository {
       var response = await dio.get(
           'https://servicodados.ibge.gov.br/api/v1/localidades/estados/$uF/municipios');
       if (response.statusCode == 200) {
-        final cities = response.data as List;
-        return cities.map((city) => City(city: city)).toList();
+        final data = response.data as List;
+        return data.map((value) => City(city: value['nome'])).toList();
       }
       throw Exception();
     } on Exception catch (e) {
