@@ -1,10 +1,15 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:igreja_izau/app/modules/home/membro/controller/membro_controller.dart';
 
-import 'widgets/member_form.dart';
-import 'widgets/member_title.dart';
-import 'widgets/member_title_form.dart';
+import '../../../../core/ui/categories_form_field_decoration.dart';
+import '../../../../core/ui/drop_form_field_template.dart';
+import '../../../../core/ui/form_field_template.dart';
+
+part 'widgets/member_form.dart';
+part 'widgets/member_title.dart';
+part 'widgets/member_title_form.dart';
 
 class MemberRegisterPage extends StatelessWidget {
   final MemberController controller;
@@ -20,35 +25,67 @@ class MemberRegisterPage extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        const MemberTitle(),
+        const _MemberTitle(),
         const Divider(
           thickness: 2,
         ),
-        const MemberTitleForm(),
+        const _MemberTitleForm(),
         const Divider(
           thickness: 2,
         ),
         Form(
           key: formKey,
-          child: MemberForm(controller: controller),
+          child: _MemberForm(
+            controller: controller,
+            onTap: (
+                {address,
+                addressNumber,
+                admissionDate,
+                birthday,
+                churchCityBaptism,
+                churchName,
+                cpf,
+                dateBaptism,
+                dateChurchBaptism,
+                father,
+                maritalStatus,
+                mother,
+                name,
+                nationatily,
+                naturality,
+                profession,
+                rg,
+                spouse,
+                state}) async {
+              final formValidate = formKey.currentState?.validate() ?? false;
+              if (formValidate) {
+                await controller.sendData(
+                  address: address,
+                  addressNumber: addressNumber,
+                  admissionDate: admissionDate,
+                  birthday: birthday,
+                  churchCityBaptism: churchCityBaptism,
+                  churchName: churchName,
+                  cpf: cpf,
+                  dateBaptism: dateBaptism,
+                  dateChurchBaptism: dateChurchBaptism,
+                  father: father,
+                  maritalStatus: maritalStatus,
+                  mother: mother,
+                  name: name,
+                  nationatily: nationatily,
+                  naturality: nationatily,
+                  profession: profession,
+                  rg: rg,
+                  spouse: spouse,
+                  state: state,
+                );
+              }
+            },
+          ),
         ),
         const Divider(
           thickness: 2,
-        ),
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: ElevatedButton(
-            onPressed: () async {
-              final formValidate = formKey.currentState?.validate() ?? false;
-              if (formValidate) {
-                await controller.sendData();
-              }
-            },
-            style: ElevatedButton.styleFrom(
-                minimumSize: const Size(250, 50),
-                maximumSize: const Size(500, 50)),
-            child: const Text('Salvar'),
-          ),
         ),
       ],
     );

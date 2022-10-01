@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
+part of '../member_register_page.dart';
 
-class MemberTitleForm extends StatelessWidget {
-  const MemberTitleForm({Key? key}) : super(key: key);
+class _MemberTitleForm extends StatelessWidget {
+  const _MemberTitleForm({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

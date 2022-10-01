@@ -1,3 +1,5 @@
+import 'package:igreja_izau/app/models/user.dart';
+
 abstract class AuthRepository {
-  Future<String?> login({required String email, required String password});
+  Future<String?> login({required UserModel user});
 }

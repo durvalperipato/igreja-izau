@@ -11,7 +11,27 @@ class MemberController extends Cubit<MembroState> {
       : _memberService = memberService,
         super(MembroState.initial());
 
-  Future<void> sendData() async {}
+  Future<void> sendData({
+    String? name,
+    String? mother,
+    String? father,
+    String? birthday,
+    String? nationatily,
+    String? naturality,
+    String? state,
+    String? maritalStatus,
+    String? profession,
+    String? admissionDate,
+    String? rg,
+    String? cpf,
+    String? address,
+    String? addressNumber,
+    String? spouse,
+    String? dateBaptism,
+    String? churchCityBaptism,
+    String? churchName,
+    String? dateChurchBaptism,
+  }) async {}
 
   Future<void> getCitiesByUF({required String uF}) async {
     try {

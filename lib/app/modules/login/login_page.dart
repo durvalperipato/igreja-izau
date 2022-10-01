@@ -14,8 +14,9 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
-  final _emailEC = TextEditingController(text: "anesia@adporto.com.br");
-  final _passwordEC = TextEditingController();
+  //TODO Mudar quando implementar
+  final _emailEC = TextEditingController(text: "secretaria");
+  final _passwordEC = TextEditingController(text: "sec.adporto.madureira");
 
   @override
   Widget build(BuildContext context) {
@@ -44,8 +45,7 @@ class _LoginPageState extends State<LoginPage> {
               child: Column(
                 children: [
                   const Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 16, vertical: 20.0),
+                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20.0),
                       child: CircleAvatar(
                         radius: 50,
                       )),
@@ -66,12 +66,11 @@ class _LoginPageState extends State<LoginPage> {
                       controller: _emailEC,
                       validator: Validatorless.multiple(
                         [
-                          Validatorless.required('Email obrigatório'),
-                          Validatorless.email('Email inválido'),
+                          Validatorless.required('Email / Usuário obrigatório'),
                         ],
                       ),
                       decoration: const InputDecoration(
-                        labelText: 'E-mail',
+                        labelText: 'E-mail / Usuário',
                         border: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.grey),
                         ),
@@ -86,10 +85,7 @@ class _LoginPageState extends State<LoginPage> {
                     child: TextFormField(
                       controller: _passwordEC,
                       obscureText: true,
-                      decoration: const InputDecoration(
-                          labelText: 'Senha',
-                          border: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.grey))),
+                      decoration: const InputDecoration(labelText: 'Senha', border: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey))),
                     ),
                   ),
                   const SizedBox(
@@ -97,16 +93,12 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   ElevatedButton(
                     onPressed: () async {
-                      final formValid =
-                          _formKey.currentState?.validate() ?? false;
+                      final formValid = _formKey.currentState?.validate() ?? false;
                       if (formValid) {
-                        //TODO Mudar o password e incluir validator no TextFormField
-                        await widget.controller
-                            .login(email: _emailEC.text, password: '');
+                        await widget.controller.login(email: _emailEC.text, password: _passwordEC.text);
                       }
                     },
-                    style: ElevatedButton.styleFrom(
-                        minimumSize: const Size(250, 50)),
+                    style: ElevatedButton.styleFrom(minimumSize: const Size(250, 50)),
                     child: const Text('Entrar'),
                   ),
                   const SizedBox(

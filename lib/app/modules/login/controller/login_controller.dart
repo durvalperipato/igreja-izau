@@ -20,16 +20,12 @@ class LoginController extends Cubit<LoginState> {
       final token = await _authService.login(email: email, password: password);
       if (token == null) {
         emit(
-          state.copyWith(
-              status: LoginStatus.failure,
-              message: 'Erro ao retornar token do usuário'),
+          state.copyWith(status: LoginStatus.failure, message: 'Erro ao retornar token do usuário'),
         );
       }
     } on Exception {
       emit(
-        state.copyWith(
-            status: LoginStatus.failure,
-            message: 'Erro ao retornar token do usuário'),
+        state.copyWith(status: LoginStatus.failure, message: 'Erro ao retornar token do usuário'),
       );
     }
   }

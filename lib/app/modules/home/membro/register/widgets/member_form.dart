@@ -1,41 +1,60 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:igreja_izau/app/core/ui/categories_form_field_decoration.dart';
-import 'package:igreja_izau/app/core/ui/drop_form_field_template.dart';
-import 'package:igreja_izau/app/core/ui/form_field_template.dart';
-import 'package:igreja_izau/app/modules/home/membro/controller/membro_controller.dart';
+part of '../member_register_page.dart';
 
-class MemberForm extends StatefulWidget {
+typedef Member = Function({
+  String? name,
+  String? mother,
+  String? father,
+  String? birthday,
+  String? nationatily,
+  String? naturality,
+  String? state,
+  String? maritalStatus,
+  String? profession,
+  String? admissionDate,
+  String? rg,
+  String? cpf,
+  String? address,
+  String? addressNumber,
+  String? spouse,
+  String? dateBaptism,
+  String? churchCityBaptism,
+  String? churchName,
+  String? dateChurchBaptism,
+});
+
+class _MemberForm extends StatefulWidget {
   final MemberController controller;
-  const MemberForm({
+  final Member onTap;
+  const _MemberForm({
     Key? key,
     required this.controller,
+    required this.onTap,
   }) : super(key: key);
 
   @override
-  State<MemberForm> createState() => _MemberFormState();
+  State<_MemberForm> createState() => _MemberFormState();
 }
 
-class _MemberFormState extends State<MemberForm> {
+class _MemberFormState extends State<_MemberForm> {
   final _nameEC = TextEditingController();
   final _motherEC = TextEditingController();
   final _fatherEC = TextEditingController();
   final _birthdayEC = TextEditingController();
-  final _nacionalityEC = TextEditingController();
+  final _nationalityEC = TextEditingController();
   final _naturalityEC = TextEditingController();
   final _stateEC = TextEditingController();
   final _maritalStatusEC = TextEditingController();
   final _professionEC = TextEditingController();
-  final _numberOfCertificateEC = TextEditingController();
-  final _christeningDateEC = TextEditingController();
-  final _churchLocalEC = TextEditingController();
   final _admissionDateEC = TextEditingController();
   final _rgEC = TextEditingController();
   final _cpfEC = TextEditingController();
-  final _departureDateEC = TextEditingController();
   final _addressEC = TextEditingController();
   final _addressNumberEC = TextEditingController();
+  final _spouseEC = TextEditingController();
+  final _dateBaptismEC = TextEditingController();
+  final _churchNameEC = TextEditingController();
+  final _churchCityBaptismEC = TextEditingController();
+  final _dateChurchBaptismEC = TextEditingController();
 
   @override
   void initState() {
@@ -48,20 +67,23 @@ class _MemberFormState extends State<MemberForm> {
     _motherEC.dispose();
     _fatherEC.dispose();
     _birthdayEC.dispose();
-    _nacionalityEC.dispose();
+    _nationalityEC.dispose();
     _naturalityEC.dispose();
     _stateEC.dispose();
     _maritalStatusEC.dispose();
     _professionEC.dispose();
-    _numberOfCertificateEC.dispose();
-    _christeningDateEC.dispose();
-    _churchLocalEC.dispose();
     _admissionDateEC.dispose();
     _rgEC.dispose();
     _cpfEC.dispose();
-    _departureDateEC.dispose();
     _addressEC.dispose();
     _addressNumberEC.dispose();
+    _spouseEC.dispose();
+    _dateBaptismEC.dispose();
+    _dateBaptismEC.dispose();
+    _churchNameEC.dispose();
+    _churchCityBaptismEC.dispose();
+    _dateChurchBaptismEC.dispose();
+
     super.dispose();
   }
 
@@ -76,9 +98,7 @@ class _MemberFormState extends State<MemberForm> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('Dados Pessoais:',
-                    style:
-                        TextStyle(fontSize: 16, fontStyle: FontStyle.italic)),
+                const Text('Dados Pessoais:', style: TextStyle(fontSize: 16, fontStyle: FontStyle.italic)),
                 const SizedBox(height: 10),
                 CategoriesFormFieldDecoration(
                   child: Column(
@@ -116,19 +136,26 @@ class _MemberFormState extends State<MemberForm> {
                           ),
                           const SizedBox(width: 20),
                           Expanded(
-                            child: FormFieldTemplate(
-                                controller: _rgEC, label: 'RG'),
+                            child: FormFieldTemplate(controller: _rgEC, label: 'RG'),
                           ),
                           const SizedBox(width: 20),
                           Expanded(
                             flex: 1,
-                            child: FormFieldTemplate(
-                                controller: _cpfEC, label: 'CPF'),
+                            child: FormFieldTemplate(controller: _cpfEC, label: 'CPF'),
                           ),
                         ],
                       ),
-                      FormFieldTemplate(
-                          controller: _addressEC, label: 'Endereço'),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: FormFieldTemplate(controller: _addressEC, label: 'Endereço'),
+                          ),
+                          const SizedBox(width: 20),
+                          Expanded(
+                            child: FormFieldTemplate(controller: _addressNumberEC, label: 'Número'),
+                          ),
+                        ],
+                      ),
                       Row(
                         children: [
                           Expanded(
@@ -173,18 +200,28 @@ class _MemberFormState extends State<MemberForm> {
                           ),
                           const SizedBox(width: 20),
                           Expanded(
-                            child: BlocSelector<MemberController, MembroState,
-                                List<String>>(
+                            child: BlocSelector<MemberController, MembroState, List<String>>(
                               bloc: widget.controller,
                               selector: (state) => state.cities,
-                              builder: (context, cities) =>
-                                  DropFormFieldTemplate(
-                                      value:
-                                          cities.isEmpty ? null : cities.first,
-                                      items: cities,
-                                      onChanged: (value) =>
-                                          _naturalityEC.text = value ?? '',
-                                      label: 'Cidade'),
+                              builder: (context, cities) => DropFormFieldTemplate(
+                                  value: cities.isEmpty ? null : cities.first, items: cities, onChanged: (value) => _naturalityEC.text = value ?? '', label: 'Cidade'),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Expanded(child: FormFieldTemplate(controller: _nationalityEC, label: 'Nacionalidade')),
+                          const SizedBox(width: 20),
+                          Expanded(
+                            child: DropFormFieldTemplate(
+                              label: 'Estado Civil',
+                              onChanged: (value) {
+                                if (value != null) {
+                                  _maritalStatusEC.text = value;
+                                }
+                              },
+                              items: const ['Solteiro', 'Casado', 'Divorciado', 'União Estável'],
                             ),
                           ),
                         ],
@@ -193,62 +230,70 @@ class _MemberFormState extends State<MemberForm> {
                   ),
                 ),
                 const SizedBox(height: 40),
-                const Text('Informações:',
-                    style:
-                        TextStyle(fontSize: 16, fontStyle: FontStyle.italic)),
+                const Text('Informações Pessoais:', style: TextStyle(fontSize: 16, fontStyle: FontStyle.italic)),
                 const SizedBox(height: 10),
                 CategoriesFormFieldDecoration(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      FormFieldTemplate(
-                          controller: _motherEC, label: 'Filiação (mãe)'),
-                      FormFieldTemplate(
-                          controller: _fatherEC, label: 'Filiação (pai)'),
-                      FormFieldTemplate(
-                          controller: _nacionalityEC, label: 'Nacionalidade'),
-                      DropFormFieldTemplate(
-                        label: 'Estado Civil',
-                        onChanged: (value) {
-                          if (value != null) {
-                            _maritalStatusEC.text = value;
-                          }
-                        },
-                        items: const [
-                          'Solteiro',
-                          'Casado',
-                          'Divorciado',
-                          'União Estável'
-                        ],
-                      ),
-                      FormFieldTemplate(
-                          controller: _professionEC, label: 'Profissão'),
+                      FormFieldTemplate(controller: _motherEC, label: 'Filiação (mãe)'),
+                      FormFieldTemplate(controller: _fatherEC, label: 'Filiação (pai)'),
+                      FormFieldTemplate(controller: _professionEC, label: 'Profissão'),
+                      FormFieldTemplate(controller: _spouseEC, label: 'Cônjuge'),
                     ],
                   ),
                 ),
                 const SizedBox(height: 40),
-                const Text('Igreja:',
-                    style:
-                        TextStyle(fontSize: 16, fontStyle: FontStyle.italic)),
+                const Text('Igreja:', style: TextStyle(fontSize: 16, fontStyle: FontStyle.italic)),
                 const SizedBox(height: 10),
                 CategoriesFormFieldDecoration(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      FormFieldTemplate(
-                        controller: _christeningDateEC,
-                        label: 'Data do batizado',
-                        readOnly: true,
-                        suffixIcon: const Icon(Icons.date_range),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: FormFieldTemplate(
+                              controller: _dateBaptismEC,
+                              label: 'Data do batizado',
+                              readOnly: true,
+                              suffixIcon: const Icon(Icons.date_range),
+                            ),
+                          ),
+                          const SizedBox(width: 20),
+                          Expanded(
+                            child: FormFieldTemplate(
+                              controller: _admissionDateEC,
+                              label: 'Data de admissão',
+                              suffixIcon: const Icon(Icons.date_range),
+                            ),
+                          ),
+                          const SizedBox(width: 20),
+                          Expanded(
+                            child: FormFieldTemplate(
+                              controller: _dateChurchBaptismEC,
+                              label: 'Data do batismo na igreja',
+                              readOnly: true,
+                              suffixIcon: const Icon(Icons.date_range),
+                            ),
+                          ),
+                        ],
                       ),
-                      FormFieldTemplate(
-                          controller: _churchLocalEC, label: 'Igreja/Local'),
-                      FormFieldTemplate(
-                        controller: _admissionDateEC,
-                        label: 'Data de admissão',
-                        suffixIcon: const Icon(Icons.date_range),
-                      ),
+                      FormFieldTemplate(controller: _churchNameEC, label: 'Nome da congregação'),
+                      FormFieldTemplate(controller: _churchCityBaptismEC, label: 'Cidade de batismo'),
                     ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: ElevatedButton(
+                    onPressed: () => widget.onTap(
+                      father: _fatherEC.text,
+                      mother: _motherEC.text,
+                      name: _nameEC.text,
+                    ),
+                    style: ElevatedButton.styleFrom(minimumSize: const Size(250, 50), maximumSize: const Size(500, 50)),
+                    child: const Text('Salvar'),
                   ),
                 ),
               ],

@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
+part of '../member_register_page.dart';
 
-class MemberTitle extends StatelessWidget {
-  const MemberTitle({Key? key}) : super(key: key);
+class _MemberTitle extends StatelessWidget {
+  const _MemberTitle({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

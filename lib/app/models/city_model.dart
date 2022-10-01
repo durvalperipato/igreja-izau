@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-import 'package:igreja_izau/app/entities/city.dart';
+import 'package:igreja_izau/app/models/city.dart';
 
 class CityModel extends City {
   final String nameCity;
@@ -21,6 +21,5 @@ class CityModel extends City {
 
   String toJson() => json.encode(toMap());
 
-  factory CityModel.fromJson(String source) =>
-      CityModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory CityModel.fromJson(String source) => CityModel.fromMap(json.decode(source) as Map<String, dynamic>);
 }
