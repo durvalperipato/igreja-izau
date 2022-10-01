@@ -17,7 +17,8 @@ class MemberRepositoryImpl implements MemberRepository {
   Future<List<City>> getCitiesByUF({required String uF}) async {
     try {
       final dio = Dio();
-      var response = await dio.get('https://servicodados.ibge.gov.br/api/v1/localidades/estados/$uF/municipios');
+      var response = await dio
+          .get('https://servicodados.ibge.gov.br/api/v1/localidades/estados/$uF/municipios');
       if (response.statusCode == 200) {
         final data = response.data as List;
         return data.map((value) => City(city: value['nome'])).toList();
@@ -34,6 +35,6 @@ class MemberRepositoryImpl implements MemberRepository {
       final dio = Dio();
 
       var response = await dio.post(AD_PORTO + ENDPOINT_CREATE_MEMBER, data: member.toJson());
-    } catch (e) {}
+    } on DioError {}
   }
 }
