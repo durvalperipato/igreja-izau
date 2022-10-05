@@ -19,8 +19,7 @@ class AuthRepositoryImpl implements AuthRepository {
         data: user.toJson(),
       );
       if (response.statusCode == 200) {
-        final token = response.data.toString();
-        return token;
+        return response.data["token"];
       }
       throw Exception();
     } on DioError catch (e) {

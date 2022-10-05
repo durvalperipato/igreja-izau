@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:igreja_izau/app/core/storage/secure_storage.dart';
 import 'package:igreja_izau/app/modules/login/controller/login_controller.dart';
 import 'package:validatorless/validatorless.dart';
 
@@ -22,13 +23,16 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return BlocListener<LoginController, LoginState>(
       bloc: widget.controller,
-      listener: ((context, state) {
+      listener: ((context, state) async {
         if (state.status == LoginStatus.failure) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(state.message ?? 'Erro interno'),
             ),
           );
+        } else if (state.token != null) {
+          SecureStorage.instance.write(key: "token", value: state.token);
+          Navigator.pushNamed(context, "/home/");
         }
       }),
       child: Scaffold(
@@ -85,7 +89,9 @@ class _LoginPageState extends State<LoginPage> {
                     child: TextFormField(
                       controller: _passwordEC,
                       obscureText: true,
-                      decoration: const InputDecoration(labelText: 'Senha', border: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey))),
+                      decoration: const InputDecoration(
+                          labelText: 'Senha',
+                          border: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey))),
                     ),
                   ),
                   const SizedBox(
@@ -95,7 +101,8 @@ class _LoginPageState extends State<LoginPage> {
                     onPressed: () async {
                       final formValid = _formKey.currentState?.validate() ?? false;
                       if (formValid) {
-                        await widget.controller.login(email: _emailEC.text, password: _passwordEC.text);
+                        await widget.controller
+                            .login(email: _emailEC.text, password: _passwordEC.text);
                       }
                     },
                     style: ElevatedButton.styleFrom(minimumSize: const Size(250, 50)),

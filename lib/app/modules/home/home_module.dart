@@ -15,8 +15,7 @@ class HomeModule extends Module {
           (i) => HomeController(),
         ),
         Bind.lazySingleton<MemberRepository>((i) => MemberRepositoryImpl()),
-        Bind.lazySingleton<MemberService>(
-            (i) => MemberServiceImpl(memberRepository: i())),
+        Bind.lazySingleton<MemberService>((i) => MemberServiceImpl(memberRepository: i())),
         Bind.singleton((i) => MemberController(memberService: i())),
       ];
 
@@ -24,9 +23,11 @@ class HomeModule extends Module {
   List<ModularRoute> get routes => [
         ChildRoute(
           '/',
-          child: ((context, args) => HomePage(
-                controller: Modular.get(),
-              )),
+          child: (context, args) {
+            return HomePage(
+              controller: Modular.get(),
+            );
+          },
         ),
       ];
 }

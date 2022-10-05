@@ -22,6 +22,8 @@ class LoginController extends Cubit<LoginState> {
         emit(
           state.copyWith(status: LoginStatus.failure, message: 'Erro ao retornar token do usuário'),
         );
+      } else {
+        emit(state.copyWith(token: token));
       }
     } on Exception {
       emit(
